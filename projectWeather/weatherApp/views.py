@@ -6,7 +6,8 @@ from .models import City
 from .forms import CityForm
 
 def index(request):
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + value_secret_key
+    # url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + value_secret_key
+    url = 'https://api.openweathermap.org/data/3.0/onecall?lat=39.099724&lon=94.578331&units=metric&appid=' + value_secret_key
 
     # city = 'Barcelona'
     cities = City.objects.all()  # return all the cities in the database
