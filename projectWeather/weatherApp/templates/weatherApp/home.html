@@ -1,0 +1,50 @@
+<!-- extends is for inheriting from the base.html -->
+{% extends 'weatherApp/base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <form method="post" class="col-sm ">
+          {% csrf_token %}
+          <div class="row">
+              <div class="col">
+                 <input type="text" class="form-control" name="city" placeholder="Search">
+              </div>
+              <div class="col">
+                 <button class="button is-info" >
+                    Add City
+                 </button>
+              </div>
+          </div>
+        </form>
+        <div class="col-6 ">
+                <div class="box">
+                    <span class="card-text" style="float:right;">{{ city_weather_update.time }}</span>
+                    <article class="media">
+
+                        <div class="media-left">
+                            <figure class="image is-50x50">
+                                <img src="http://openweathermap.org/img/w/{{ city_weather_update.icon }}.png" alt="Image">
+                            </figure>
+                        </div>
+
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <span class="title">{{ city_weather_update.city }} {{ city_weather_update.country_code }}</span>
+                                    <br>
+                                    <span class="subtitle">{{ city_weather_update.temperature }}</span>
+                                    <br> {{ city_weather_update.description | title }}
+                                    <br> {{ city_weather_update.wind }}
+                                    <br> {{ city_weather_update.humidity }}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
