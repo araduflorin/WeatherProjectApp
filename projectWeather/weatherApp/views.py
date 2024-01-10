@@ -65,6 +65,7 @@ def index(request):
                 'country_code': response['sys']['country'],
                 'wind': 'Wind: ' + str(response['wind']['speed']) + 'km/h',
                 'humidity': 'Humidity: ' + str(response['main']['humidity']) + '%',
+                'precipitation': 'Precipitation:' + str(response['main']['precipitation']) + '%',
                 'time': formatted_time
             }
         # if the request method is GET empty the dictionary
