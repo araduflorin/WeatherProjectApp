@@ -49,9 +49,12 @@ def index(request):
             # getting the city name from the form input
             city_name = request.POST.get('city')
             # the url for current weather, takes city_name and API_KEY
-            url = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
+            url_current = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
+            url_forecast = f'https://api.openweathermap.org/data/2.5/forecast?q={city_name}&appid={API_KEY}&units=metric'
+
             # converting the request response to json
-            response = requests.get(url).json()
+            response_current = requests.get(url_current).json()
+            response_forecast = requests.get(url_current).json()
             # getting the current time
             current_time = datetime.now()
             # formatting the time using directives, it will take this format Day, Month Date Year, Current Time
@@ -59,12 +62,14 @@ def index(request):
             # bundling the weather information in one dictionary
             city_weather_update = {
                 'city': city_name,
-                'description': response['weather'][0]['description'],
-                'icon': response['weather'][0]['icon'],
-                'temperature': 'Temperature: ' + str(response['main']['temp']) + ' °C',
-                'country_code': response['sys']['country'],
-                'wind': 'Wind: ' + str(response['wind']['speed']) + 'km/h',
-                'humidity': 'Humidity: ' + str(response['main']['humidity']) + '%',
+                'description': response_current['weather'][0]['description'],
+                'icon': response_current['weather'][0]['icon'],
+                'temperature': 'Temperature: ' + str(response_current['main']['temp']) + ' °C',
+                'feels_like': 'Feels like: ' + str(response_current['main']['feels_like']) + ' °C',
+                'country_code': response_current['sys']['country'],
+                'wind': 'Wind: ' + str(response_current['wind']['speed']) + 'km/h',
+                'humidity': 'Humidity: ' + str(response_current['main']['humidity']) + '%',
+                'pressure': 'Pressure: ' + str(response_current['main']['pressure']) + '%',
                 'time': formatted_time
             }
         # if the request method is GET empty the dictionary

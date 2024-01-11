@@ -4,19 +4,21 @@
 
 <div class="container">
     <div class="row">
+        <br>
         <form method="post" class="col-sm ">
           {% csrf_token %}
           <div class="row">
-              <div class="col">
+              <div class="col-sm-4">
                  <input type="text" class="form-control" name="city" placeholder="Search">
               </div>
-              <div class="col">
-                 <button class="button is-info" >
+              <div class="col" >
+                 <button class="button is-info " style="height:34px; width:170;" >
                     Add City
                  </button>
               </div>
           </div>
         </form>
+        <br>
         <div class="col-6 ">
                 <div class="box">
                     <span class="card-text" style="float:right;">{{ city_weather_update.time }}</span>
@@ -33,10 +35,12 @@
                                 <p>
                                     <span class="title">{{ city_weather_update.city }} {{ city_weather_update.country_code }}</span>
                                     <br>
-                                    <span class="subtitle">{{ city_weather_update.temperature }}</span>
+                                    <span >{{ city_weather_update.temperature }}</span>
+                                    <br >{{ city_weather_update.feels_like }}
                                     <br> {{ city_weather_update.description | title }}
                                     <br> {{ city_weather_update.wind }}
                                     <br> {{ city_weather_update.humidity }}
+                                    <br> {{ city_weather_update.pressure }}
                                 </p>
                             </div>
                         </div>
