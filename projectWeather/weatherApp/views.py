@@ -62,6 +62,7 @@ def index(request):
             # bundling the weather information in one dictionary
             city_weather_update = {
                 'city': city_name,
+
                 'description': response_current['weather'][0]['description'],
                 'icon': response_current['weather'][0]['icon'],
                 'temperature': 'Temperature: ' + str(response_current['main']['temp']) + ' °C',
@@ -70,7 +71,10 @@ def index(request):
                 'wind': 'Wind: ' + str(response_current['wind']['speed']) + 'km/h',
                 'humidity': 'Humidity: ' + str(response_current['main']['humidity']) + '%',
                 'pressure': 'Pressure: ' + str(response_current['main']['pressure']) + '%',
+                # 'precipitation': 'Precipitation:' + str(response_current['main']['precipitation']) + '%',
+
                 'time': formatted_time
+
             }
         # if the request method is GET empty the dictionary
         else:
