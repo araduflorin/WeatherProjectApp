@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 
 import requests
@@ -63,13 +64,17 @@ def index(request):
                 'city': city_name,
                 'description': response_current['weather'][0]['description'],
                 'icon': response_current['weather'][0]['icon'],
-                'temperature': 'Temperature: ' + str(response_current['main']['temp']) + ' °C',
+                'temperature': response_current['main']['temp'],
+                'feels_like': response_current['main']['feels_like'],
                 'country_code': response_current['sys']['country'],
-                'wind': 'Wind: ' + str(response_current['wind']['speed']) + 'km/h',
-                'humidity': 'Humidity: ' + str(response_current['main']['humidity']) + '%',
+                'wind': '' + str(response_current['wind']['speed']) + ' m/s',
+                'humidity': '' + str(response_current['main']['humidity']) + '%',
+                'pressure': '' + str(response_current['main']['pressure']) + ' hPa',
+                'snow': '' + str(response_current['snow']['1h']) ,
                 # 'precipitation': 'Precipitation:' + str(response['main']['precipitation']) + '%',
                 'time': formatted_time
             }
+            # print(type(city_weather_update.temperature))
         # if the request method is GET empty the dictionary
         else:
             city_weather_update = {}
@@ -79,3 +84,29 @@ def index(request):
     # the except will catch all the errors
     except:
         return render(request, 'weatherApp/404.html')
+
+
+# from django.shortcuts import render
+
+# def weather_widget_view(request):
+#     if request.method == 'POST':
+#         city = request.POST.get('city')  # Retrieve city from form submission
+#
+#         # Generate widget parameters
+#         widget_params = [
+#             {
+#                 'id': 15,
+#                 'cityid': 2643743, #city,  # Replace hardcoded city ID with actual input
+#                 'appid': '4c1262c471ca84404de85d2fd0bc73ff',
+#                 'units': 'metric',
+#                 'containerid': 'openweathermap-widget-15',
+#             },
+#         ]
+#
+#         context = {
+#             'widget_params': widget_params,
+#         }
+#         return render(request, 'weatherApp/weather_widget.html', context)
+#     else:
+#         return render(request, 'weatherApp/index1.html')
+
