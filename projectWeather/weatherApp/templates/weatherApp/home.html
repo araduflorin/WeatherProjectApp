@@ -43,121 +43,105 @@
                                     <br> {{ city_weather_update.description | title }}
                                     <br> {{ city_weather_update.wind }}
                                     <br> {{ city_weather_update.humidity }}
+                                    <br> {{ city_weather_update.pressure }}
+                                    <br> {{ city_weather_update.snow }}
 <!--                                    <br> {{ city_weather_update.precipitation }}-->
                                 </p>
                             </div>
                         </div>
                     </article>
-                </div>
             </div>
 
-            <div id="openweathermap-widget-15"></div>
-            <script>window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];  window.myWidgetParam.push({id: 15,cityid("{{city_weather_update.city}}") ,appid: '4c1262c471ca84404de85d2fd0bc73ff',units: 'metric',containerid: 'openweathermap-widget-15',  });  (function() {var script = document.createElement('script');script.async = true;script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(script, s);  })();</script>
 <!--            <div id="openweathermap-widget-15"></div>-->
 <!--            <script>window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];  window.myWidgetParam.push({id: 15,cityid: '670474',appid: '4c1262c471ca84404de85d2fd0bc73ff',units: 'metric',containerid: 'openweathermap-widget-15',  });  (function() {var script = document.createElement('script');script.async = true;script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(script, s);  })();</script>-->
 
-<!--            <div id="openweathermap-widget-15" class="container-widget container-widget&#45;&#45;15"><div id="container-openweathermap-widget-15"><link href="//openweathermap.org/themes/openweathermap/assets/vendor/owm/css/openweathermap-widget-right.min.css" rel="stylesheet"><div class="widget-right weather-right&#45;&#45;type1 widget-right&#45;&#45;brown">-->
-<!--                    <div class="widget-right__header widget-right__header&#45;&#45;brown">-->
-<!--                      <div class="widget-right__layout">-->
-<!--                        <div>-->
-<!--                          <h2 class="widget-right__title">{{ city_weather_update.city }}, RO</h2>-->
-<!--                          <p class="widget-right__description">overcast clouds</p>-->
-<!--                        </div>-->
-<!--                      </div><img src="//openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/04d.png" width="128" height="128" alt="Weather in Ploieşti, RO" class="weather-right__icon weather-right__icon&#45;&#45;type1">-->
-<!--                    </div>-->
-<!--                    <div class="weather-right weather-right&#45;&#45;brown">-->
-<!--                      <div class="weather-right__layout">-->
-<!--                        <div class="weather-right__temperature">0<span>°C</span></div>-->
-<!--                        <div class="weather-right__weather">-->
-<!--                          <div class="weather-right-card">-->
-<!--                            <table class="weather-right__table">-->
-<!--                              <tbody><tr class="weather-right__items">-->
-<!--                                <th colspan="2" class="weather-right__item">Details</th>-->
-<!--                              </tr>-->
-<!--                              <tr class="weather-right__items">-->
-<!--                                <td class="weather-right__item">Feels like</td>-->
-<!--                                <td class="weather-right__item weather-right__feels">0<span>°C</span></td>-->
-<!--                              </tr>-->
-<!--                              <tr class="weather-right__items">-->
-<!--                                <td class="weather-right__item">Wind</td>-->
-<!--                                <td class="weather-right__item weather-right__wind-speed">1.1 m/s </td>-->
-<!--                              </tr>-->
-<!--                              <tr class="weather-right-card__items">-->
-<!--                                <td class="weather-right__item">Humidity</td>-->
-<!--                                <td class="weather-right__item weather-right__humidity">86%</td>-->
-<!--                              </tr>-->
-<!--                              <tr class="weather-right-card__items">-->
-<!--                                <td class="weather-right__item">Precip</td>-->
-<!--                                <td class="weather-right__item"></td>-->
-<!--                              </tr>-->
-<!--                              <tr class="weather-right-card__items">-->
-<!--                                <td class="weather-right__item">Pressure</td>-->
-<!--                                <td class="weather-right__item weather-right__pressure">1017 hPa</td>-->
-<!--                              </tr>-->
-<!--                            </tbody></table>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="widget-right__footer widget-right__footer&#45;&#45;brown">-->
-<!--                      <div class="widget-right__layout"><a href="//openweathermap.org/" target="_blank"><div class="widget-right__logo_black_small"></div></a>-->
-<!--                        <div class="widget-right__date">{{ city_weather_update.time }}</div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--            </div>-->
+            <div id="openweathermap-widget-15" class="container-widget container-widget--15">
+                <div id="container-openweathermap-widget-15">
+                    <link href="//openweathermap.org/themes/openweathermap/assets/vendor/owm/css/openweathermap-widget-right.min.css" rel="stylesheet">
+                    <div class="widget-right weather-right--type1 widget-right--brown" >
+                    <div class="widget-right__header widget-right__header--brown" >
+                      <div class="widget-right__layout" >
+                        <div>
+                          <h2 class="widget-right__title">{{ city_weather_update.city }}, {{ city_weather_update.country_code }}</h2>
+                          <p class="widget-right__description">{{ city_weather_update.description }}</p>
+                        </div>
+                      </div><img src="//openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/{{ city_weather_update.icon }}.png" width="128" height="128" alt="Weather in ..." class="weather-right__icon weather-right__icon--type1">
+                    </div>
+                    <div class="weather-right weather-right--brown">
+                      <div class="weather-right__layout">
+                        <div class="weather-right__temperature" style="letter-spacing:-5px; font-family: 'Oswald', arial, sans-serif !important;">{{ city_weather_update.temperature | floatformat:"0" }} °C</div>
+                        <div class="weather-right__weather">
+                          <div class="weather-right-card">
+                            <table class="weather-right__table">
+                              <tbody><tr class="weather-right__items">
+                                <th colspan="2" class="weather-right__item">Details</th>
+                              </tr>
+                              <tr class="weather-right__items">
+                                <td class="weather-right__item">Feels like</td>
+                                <td class="weather-right__item weather-right__feels">{{ city_weather_update.feels_like }}<span>°C</span></td>
+                              </tr>
+                              <tr class="weather-right__items">
+                                <td class="weather-right__item">Wind</td>
+                                <td class="weather-right__item weather-right__wind-speed">{{ city_weather_update.wind }} </td>
+                              </tr>
+                              <tr class="weather-right-card__items">
+                                <td class="weather-right__item">Humidity</td>
+                                <td class="weather-right__item weather-right__humidity">{{ city_weather_update.humidity }}</td>
+                              </tr>
+                              <tr class="weather-right-card__items">
+                                <td class="weather-right__item">Precip</td>
+                                <td class="weather-right__item">{{city_weather_update.snow}}</td>
+                              </tr>
+                              <tr class="weather-right-card__items">
+                                <td class="weather-right__item">Pressure</td>
+                                <td class="weather-right__item weather-right__pressure">{{city_weather_update.pressure}}</td>
+                              </tr>
+                            </tbody></table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="widget-right__footer widget-right__footer--brown">
+                      <div class="widget-right__layout">
+<!--                          <a href="//openweathermap.org/" target="_blank">-->
+<!--                              <div class="widget-right__logo_black_small">-->
+<!--                              </div>-->
+<!--                          </a>-->
+                        <div class="widget-right__date" style="margin-left:210px;">{{ city_weather_update.time }}</div>
+                      </div>
+                    </div>
+<!--                  </div><script>-->
+<!--                     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){-->
+<!--                     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),-->
+<!--                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)-->
+<!--                     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');-->
 
+<!--                     ga('create', 'UA1601618-11', 'auto');-->
+<!--                     ga('send', 'pageview');-->
 
-<!--            <div id="openweathermap-widget-15-1"></div>-->
-<!--            <script>-->
-<!--                const myWidgetParams = [-->
-<!--                  {-->
-<!--                    id: 15,-->
-<!--                    cityid: '2643743',-->
-<!--                    appid: '4c1262c471ca84404de85d2fd0bc73ff',-->
-<!--                    units: 'metric',-->
-<!--                    containerid: 'openweathermap-widget-15-1',-->
-<!--                  },-->
-<!--                ];-->
+<!--                    </script>-->
+<!--                  </div>-->
+            </div>
+<!--                  </div><script>-->
+<!--         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');-->
 
-<!--                const script = document.createElement('script');-->
-<!--                script.async = true;-->
-<!--                script.src = '//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js';-->
-<!--                document.body.appendChild(script);-->
-<!--            </script>-->
+<!--         ga('create', 'UA1601618-11', 'auto');-->
+<!--         ga('send', 'pageview');-->
+
+<!--        </script></div></div>-->
+
 <!--            </div>-->
-<!--            </div>-->
+<!--                  </div><script>-->
+<!--         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');-->
+
+<!--         ga('create', 'UA1601618-11', 'auto');-->
+<!--         ga('send', 'pageview');-->
+
+<!--        </script></div></div>-->
+
+<!--        </div>-->
     </div>
 </div>
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--  <meta charset="UTF-8">-->
-<!--  <title>OpenWeatherMap Weather Widget</title>-->
-<!--</head>-->
-
-
-<!--  <script>-->
-<!--    const myWidgetParams = [-->
-<!--      {-->
-<!--        id: 15,-->
-<!--        cityid: '2643743',-->
-<!--        appid: '4c1262c471ca84404de85d2fd0bc73ff',-->
-<!--        units: 'metric',-->
-<!--        containerid: 'openweathermap-widget-15-1',-->
-<!--      },-->
-<!--    ];-->
-
-<!--    const script = document.createElement('script');-->
-<!--    script.async = true;-->
-<!--    script.src = '//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js';-->
-<!--    document.body.appendChild(script);-->
-<!--  </script>-->
-<!--<body>-->
-<!--  <div id="openweathermap-widget-15-1"></div>-->
-<!--</body>-->
-<!--</html>-->
 
 
 {% endblock %}
