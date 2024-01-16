@@ -6,6 +6,6 @@ app_name = 'weatherApp'
 
 urlpatterns = [
     path('', views.index, name='home'),
-    # path('', views.weather_widget_view),
+    # path('ip_home', views.home, name='ip_home'),
 
 ]

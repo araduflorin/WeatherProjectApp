@@ -1,7 +1,9 @@
+import json
 import math
 from datetime import datetime
 
 import requests
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from projectWeather.secret_key import value_secret_key
@@ -40,15 +42,60 @@ from .forms import CityForm
 
 ######################### Another variant ################
 
+api_key = '9d48a4af890c4292addde7cb086aa12c'
+api_url = 'https://ipgeolocation.abstractapi.com/v1/?api_key=' + api_key
+
+def get_ip_geolocation_data(ip_address):
+    # not using the incoming IP address for testing
+    print(ip_address)
+    response = requests.get(api_url)
+    return response.content
+
+
+# from django.shortcuts import render, HttpResponse
+
+
+# def home(request):
+#     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+#
+#     if x_forwarded_for:
+#         ip = x_forwarded_for.split(',')[0]
+#     else:
+#         ip = request.META.get('REMOTE_ADDR')
+#
+#     geolocation_json = get_ip_geolocation_data(ip)
+#     geolocation_data = json.loads(geolocation_json)
+#
+#     country = geolocation_data['country']
+#     city = geolocation_data['city']
+#
+#     return HttpResponse(
+#         "Welcome! Your IP address is: {} and you are visiting from {} in {}".format(ip, city, country))
+
+
 # the index() will handle all the app's logic
 def index(request):
     # if there are no errors the code inside try will execute
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+
+    geolocation_json = get_ip_geolocation_data(ip)
+    geolocation_data = json.loads(geolocation_json)
+
+    country = geolocation_data['country']
+    city = geolocation_data['city']
     try:
         # checking if the method is POST
         if request.method == 'POST':
             API_KEY = value_secret_key
             # getting the city name from the form input
             city_name = request.POST.get('city')
+            if city_name == "":
+                city_name = geolocation_data['city']
             # the url for current weather, takes city_name and API_KEY
             url_current = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
             url = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
@@ -70,7 +117,7 @@ def index(request):
                 'wind': '' + str(response_current['wind']['speed']) + ' m/s',
                 'humidity': '' + str(response_current['main']['humidity']) + '%',
                 'pressure': '' + str(response_current['main']['pressure']) + ' hPa',
-                'snow': '' + str(response_current['snow']['1h']) ,
+                # 'snow': '' + str(response_current['snow']['1h']) ,
                 # 'precipitation': 'Precipitation:' + str(response['main']['precipitation']) + '%',
                 'time': formatted_time
             }
@@ -84,6 +131,18 @@ def index(request):
     # the except will catch all the errors
     except:
         return render(request, 'weatherApp/404.html')
+
+
+# def home(request):
+#     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+#
+#     if x_forwarded_for:
+#         ip = x_forwarded_for.split(',')[0]
+#     else:
+#         ip = request.META.get('REMOTE_ADDR')
+#
+#     return HttpResponse("Welcome! You are visiting from: {}".format(ip))
+
 
 
 # from django.shortcuts import render
@@ -109,4 +168,3 @@ def index(request):
 #         return render(request, 'weatherApp/weather_widget.html', context)
 #     else:
 #         return render(request, 'weatherApp/index1.html')
-
