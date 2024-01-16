@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenWeatherMap Weather Widget</title>
+</head>
+<body>
+    <form method="post">
+        <label for="city">Enter a city:</label>
+        <input type="text" id="city" name="city" required>
+        <input type="submit" value="Get Weather">
+    </form>
+
+    {% if widget_params %}
+    <div id="openweathermap-widget-15"></div>
+
+    <script>
+        const myWidgetParams = {{ widget_params|safe }};  # Access widget parameters from context
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.charset = "utf-8";
+        script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
+        document.body.appendChild(script);
+
+        // Initialize OpenWeatherMap widget with dynamic parameters
+        (function() {
+            const widget = new OpenWeatherMapWidget({
+                params: myWidgetParams[0],
+            });
+            widget.render();
+        })();
+    </script>
+    {% endif %}
+</body>
+</html>
