@@ -1,6 +1,6 @@
 import json
 import math
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 from django.http import HttpResponse
@@ -87,18 +87,22 @@ def index(request):
     geolocation_data = json.loads(geolocation_json)
 
     country = geolocation_data['country']
-    city = geolocation_data['city']
+    city_ip = geolocation_data['city']
+    # print("City: ", city_ip)
+    API_KEY = value_secret_key
+
     try:
         # checking if the method is POST
         if request.method == 'POST':
-            API_KEY = value_secret_key
+
             # getting the city name from the form input
             city_name = request.POST.get('city')
-            if city_name == "":
-                city_name = geolocation_data['city']
+            # city_name = city
+            # if city_name == "":
+            #     city_name = geolocation_data['city']
             # the url for current weather, takes city_name and API_KEY
             url_current = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
-            url = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
+            url = f'https://api.openweathermap.org/data/2.5/forecast?q={city_name}&appid={API_KEY}&units=metric'
             # converting the request response to json
             response_current = requests.get(url_current).json()
             # getting the current time
@@ -106,6 +110,12 @@ def index(request):
             # formatting the time using directives, it will take this format Day, Month Date Year, Current Time
             # formatted_time = current_time.strftime("%A, %B %d %Y, %H:%M:%S %p")
             formatted_time = current_time.strftime("%H:%M  %b %d")
+            day1 = current_time+timedelta(days=1)
+            print('Ziua: ', day1)
+            current_num = current_time.strftime("%d %b")
+            first_let = day1.strftime("%a")
+            first_num = day1.strftime("%d %b")
+            print('Ziua: ', first_let)
             # bundling the weather information in one dictionary
             city_weather_update = {
                 'city': city_name,
@@ -119,12 +129,33 @@ def index(request):
                 'pressure': '' + str(response_current['main']['pressure']) + ' hPa',
                 # 'snow': '' + str(response_current['snow']['1h']) ,
                 # 'precipitation': 'Precipitation:' + str(response['main']['precipitation']) + '%',
-                'time': formatted_time
+                'time': formatted_time,
+                'current_num': current_num,
+                'first_let': first_let,
+                'first_num': first_num,
             }
             # print(type(city_weather_update.temperature))
         # if the request method is GET empty the dictionary
         else:
-            city_weather_update = {}
+            # city_weather_update = {}
+            url_current = f'https://api.openweathermap.org/data/2.5/weather?q={city_ip}&appid={API_KEY}&units=metric'
+            response_current = requests.get(url_current).json()
+            current_time = datetime.now()
+            formatted_time = current_time.strftime("%H:%M  %b %d")
+            city_weather_update = {
+                'city': city_ip,
+                'description': response_current['weather'][0]['description'],
+                'icon': response_current['weather'][0]['icon'],
+                'temperature': response_current['main']['temp'],
+                'feels_like': response_current['main']['feels_like'],
+                'country_code': response_current['sys']['country'],
+                'wind': '' + str(response_current['wind']['speed']) + ' m/s',
+                'humidity': '' + str(response_current['main']['humidity']) + '%',
+                'pressure': '' + str(response_current['main']['pressure']) + ' hPa',
+                # 'snow': '' + str(response_current['snow']['1h']) ,
+                # 'precipitation': 'Precipitation:' + str(response['main']['precipitation']) + '%',
+                'time': formatted_time
+            }
         context = {'city_weather_update': city_weather_update}
         return render(request, 'weatherApp/home.html', context)
     # if there is an error the 404 page will be rendered
@@ -132,6 +163,27 @@ def index(request):
     except:
         return render(request, 'weatherApp/404.html')
 
+
+def forecast_view(request):
+    # Make an API call to get weather forecast data for Ploiesti
+    url = "https://api.openweathermap.org/data/2.5/forecast?q=Ploiesti&appid=4c1262c471ca84404de85d2fd0bc73ff"
+    response = requests.get(url)
+    forecast_data = response.json()
+
+    # Parse the JSON response and extract relevant weather information
+    for day in forecast_data['list']:
+        # Create a `Forecast` object for each day's forecast
+        forecast = Forecast()
+        forecast.date = day['dt']
+        forecast.temperature_high = day['main']['temp_max']
+        forecast.temperature_low = day['main']['temp_min']
+        forecast.weather_description = day['weather'][0]['description']
+
+        # Save the `Forecast` object to the database
+        forecast.save()
+
+    # Return the weather forecast page template
+    return render(request, 'forecast.html')
 
 # def home(request):
 #     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
