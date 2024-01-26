@@ -88,14 +88,20 @@ def index(request):
 
     country = geolocation_data['country']
     city = geolocation_data['city']
+    print("City: ", city)
     try:
         # checking if the method is POST
         if request.method == 'POST':
             API_KEY = value_secret_key
             # getting the city name from the form input
-            city_name = request.POST.get('city')
-            if city_name == "":
-                city_name = geolocation_data['city']
+            city_name = geolocation_data['city']
+
+            # city_name = request.POST.get('city')
+            #
+            if not city_name:
+                city_name = city
+
+
             # the url for current weather, takes city_name and API_KEY
             url_current = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
             url = f'https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_KEY}&units=metric'
