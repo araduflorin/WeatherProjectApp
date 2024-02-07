@@ -45,32 +45,13 @@ from .forms import CityForm
 api_key = '9d48a4af890c4292addde7cb086aa12c'
 api_url = 'https://ipgeolocation.abstractapi.com/v1/?api_key=' + api_key
 
+
+
 def get_ip_geolocation_data(ip_address):
     # not using the incoming IP address for testing
     print(ip_address)
     response = requests.get(api_url)
     return response.content
-
-
-# from django.shortcuts import render, HttpResponse
-
-
-# def home(request):
-#     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-#
-#     if x_forwarded_for:
-#         ip = x_forwarded_for.split(',')[0]
-#     else:
-#         ip = request.META.get('REMOTE_ADDR')
-#
-#     geolocation_json = get_ip_geolocation_data(ip)
-#     geolocation_data = json.loads(geolocation_json)
-#
-#     country = geolocation_data['country']
-#     city = geolocation_data['city']
-#
-#     return HttpResponse(
-#         "Welcome! Your IP address is: {} and you are visiting from {} in {}".format(ip, city, country))
 
 
 # the index() will handle all the app's logic
@@ -86,20 +67,28 @@ def index(request):
     geolocation_json = get_ip_geolocation_data(ip)
     geolocation_data = json.loads(geolocation_json)
 
+    api_location = f'https://api.ip2location.io/'
+    geoloc = requests.get(api_location).json()
+    c = geoloc['city_name']
+
     country = geolocation_data['country']
     city = geolocation_data['city']
-    print("City: ", city)
+    print("City: ", c)
+
     try:
         # checking if the method is POST
+
         if request.method == 'POST':
+            city_name = c
             API_KEY = value_secret_key
             # getting the city name from the form input
-            city_name = geolocation_data['city']
 
+            city_name = request.POST.get('city')
+            print('City2: ', city_name)
             # city_name = request.POST.get('city')
             #
             if not city_name:
-                city_name = city
+                city_name = c
 
 
             # the url for current weather, takes city_name and API_KEY
